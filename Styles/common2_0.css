@@ -1,0 +1,113 @@
+.cMain_table {
+    /* border: 2px solid green; */
+    /* width: 1024px; */
+    margin-left: auto;
+    margin-right: auto;
+}
+.cMain_td {
+    border: 2px solid green;
+}
+.cBoxGraph {
+    width: 600px;
+    height: 300px;
+    margin-bottom: 5px;
+}
+.cBoxGraphCircle {
+    height: 400px;
+}
+.cBoxPara {
+    vertical-align: auto;
+    width: auto;
+    height: auto;
+    border: 1px solid RoyalBlue;
+    margin-bottom: 5px;
+}
+.cBoxSlider {
+    width: 330px;
+    height: 20px;
+    margin-top: 3px;
+    background-color: #d6d8c3;
+    border-color: #fff;
+}
+.cIntroduction {
+    width: auto;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    font-size: medium;
+    line-height: 25px;
+    background-color: #efe4dc;
+    border: 3px solid #dc772f;
+    margin: 2px;
+}
+.cFormula {
+    width: auto;
+    vertical-align: text-top;
+    line-height: 35px;
+    background-color: #efe4dc;
+    border: 3px solid #dc772f;
+}
+.cParameter {
+    width: auto;
+    vertical-align: text-top;
+    line-height: 35px;
+    background-color: #efe4dc;
+    border: 3px solid #dc772f;
+}
+.cText {
+    margin: 5px;
+    text-align: justify;
+    font-size: 11pt;
+    font-family: Arial;
+}
+ul {
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.cons-input{
+  width: 100px;
+}
+
+.cons-input-submit{
+  width: 100px;
+  margin-left: 20px;
+}
+
+.cons-input-mode{
+
+
+  width: 150px;
+  margin-top: 10px;
+  color: white;
+  background-color: black;
+  margin-left: 25px;
+  margin-bottom: 10px;
+  
+}
+
+.add-border{
+    border: black;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.trace-box{
+    margin-top: 7px;
+}
+
+/* TODO light on top and bottom */
+/* 
+
+var geometry = new THREE.Geometry();
+geometry.vertices.push(
+    new THREE.Vector3(0, -100, 0),
+    new THREE.Vector3(100, 0, 0),
+    new THREE.Vector3(0, 100, 0));
+
+scene.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({
+    color: 0x0000ff
+})));
+ */
+
+ 
