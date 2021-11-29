@@ -79,7 +79,7 @@
         var deg2rad = Math.PI / 180.0;
 
         // variables
-        var vR_factor = 100; // coordinates ( 0< R < 1 ) --> scene ratio
+        var vR_factor = 10; // coordinates ( 0< R < 1 ) --> scene ratio
         var vR = vR_factor * 0.3; // spherical coordinate R
         var vTheta = 0.5 * Math.PI; // spherical coordinate Theta (radians)
         var vPhi = 0.5 * Math.PI; // spherical coordinate Phi (radians)
@@ -1435,46 +1435,6 @@
             }
         }
 
-        var trace_x;
-        var trace_y;
-        var trace_z;
-
-        function setObvPointTrace() {
-            if (document.getElementById("trace_box").checked == true) {
-                observationPointTrace = new THREE.Group();
-                console.log("checked");
-                trace_x = obvPoint_scene.position.x;
-                trace_y = obvPoint_scene.position.y;
-                trace_z = obvPoint_scene.position.z;
-            }
-            else {
-                scene.remove(observationPointTrace);
-            }
-        }
-
-        function show_trace() {
-            if (document.getElementById("trace_box").checked == true) {
-
-                var z = vRho * Math.cos(vPhi);
-                var x = vRho * Math.sin(vPhi);
-                var y = vR * Math.cos(vTheta);
-
-                if (Math.abs(trace_x - x) >= 10 || Math.abs(trace_y - y) >= 10 || Math.abs(trace_z - z) >= 10) {
-                    obj = obvPoint_scene.clone();
-                    scene.remove(observationPointTrace);
-                    observationPointTrace.add(obj);
-                    scene.add(observationPointTrace);
-
-                    trace_x = x;
-                    trace_y = y;
-                    trace_z = z;
-
-                }
-            }
-            // console.log(value);
-        }
-
-
 
     </script>
 
@@ -1744,7 +1704,55 @@
                 <input type="checkbox" id="aObservationPoint" onchange="observationPointCheck()"
                     style="text-align:center;margin-top:10px" checked="checked"><i>Observation Point</i>
                 <!-- ===============================================11111111111=========================================================== -->
-                <div class="row addMarginBlock">
+                <div class="col-lg-5 add-border">
+                    <h5 class="SphericalCoordinates">Spherical Coordinates (<i>r</i>, <i>&theta;</i>, <i>&phi;</i>)</h5>
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="cText">
+                                <div><b>r :</b>
+                                    <input class="cons-input" id="cons-spherical-from-r" type="number" step="0.1"
+                                        min="0.1" max="3">
+                                    <input type="checkbox" onchange="" style="text-align:center;">
+                                    Show Surface
+                                    <input class="cons-input" id="cons-spherical-to-r" type="number" step="0.1"
+                                        min="0.1" max="3">
+                                    m
+                                </div>
+                                <div><b>&theta; :</b>
+                                    <input class="cons-input" id="cons-spherical-from-theta" type="number" step="5"
+                                        min="0" max="90">
+                                    <input type="checkbox" onchange="" style="text-align:center;">
+                                    Show Surface
+                                    <input class="cons-input" id="cons-spherical-to-theta" type="number" step="5"
+                                        min="0" max="90">
+                                    deg
+                                </div>
+                                <div><b>&phi;:</b>
+                                    <input class="cons-input" id="cons-spherical-from-phi" type="number" step="5"
+                                        min="0" max="90">
+                                    <input type="checkbox" onchange="" style="text-align:center;">
+                                    Show Surface
+                                    <input class="cons-input" id="cons-spherical-to-phi" type="number" step="5" min="0"
+                                        max="90">
+                                    deg
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-5">
+                        <input type="submit" onclick="addVolumeSpherical()" class="cons-input-submit" value="Plot">
+                        <input type="submit" onclick="removeVolumeSpherical()" class="cons-input-submit" value="Remove">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <input type="submit" onclick="fullScreenMode()" class="cons-input-mode" value="Full Screen Mode">
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" name="screenMode">
+                <div class="row addMarginBlock" style="display: none;">
                     <div class="col-lg-4">
                         <div id="vimlsli_R" class="cBoxSlider"></div>
                     </div>
@@ -1764,7 +1772,7 @@
 
                 </div>
                 <!-- ================================================222222222222====================================================================== -->
-                <div class="row addMarginBlock">
+                <div class="row addMarginBlock" style="display: none;">
                     <div class="col-lg-4">
                         <div id="vimlsli_Theta" class="cBoxSlider"></div>
                     </div>
@@ -1784,7 +1792,7 @@
 
                 </div>
                 <!-- ===================================================33333333333======================================================================== -->
-                <div class="row addMarginBlock">
+                <div class="row addMarginBlock" style="display: none;">
                     <div class="col-lg-4">
                         <div id="vimlsli_Phi" class="cBoxSlider"></div>
                     </div>
@@ -1804,7 +1812,7 @@
 
                 </div>
                 <!-- ===================================================444444444444======================================================================== -->
-                <div class="addMarginBlock">
+                <div class="addMarginBlock" style="display: none;">
                     <div class="addMargintext">Cartesian Coordinates (<i>x</i>, <i>y</i>, <i>z</i>) = <input type="text"
                             id="coordinate_1" size=15 readonly> (m, m, m)</div>
                     <div class="addMargintext">Cylindrical Coordinates (<i>&rho;</i>, <i>&phi;</i>, <i>z</i>) = <input
@@ -1815,170 +1823,88 @@
             </div>
         </div>
 
-    </div>
-    <div class="row" name="screenMode">
-        <div class="col-lg-2">
-            <div class="trace-box">
-                <input type="checkbox" id="trace_box" onchange="setObvPointTrace()"> Trace Mode
-            </div>
-            <input type="submit" onclick="fullScreenMode()" class="cons-input-mode" value="Full Screen Mode">
-            <div>
-                <button id="record" class="cons-input-mode">Start Recording</button>
-            </div>
-            <div>
-                <button id="download" class="cons-input-mode" disabled>Download</button>
-            </div>
+        <!-- /////////////////////////////////////////////////////////////////////// -->
 
 
-        </div>
-        <div class="col-lg-5 add-border">
-            <h5>Spherical Coordinates (<i>r</i>, <i>&theta;</i>, <i>&phi;</i>)</h5>
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="cText">
-                        <div><b>r :</b>
-                            <input class="cons-input" id="cons-spherical-from-r" type="number" step="0.1" min="0.1"
-                                max="3">
-                            <input class="cons-input" id="cons-spherical-to-r" type="number" step="0.1" min="0.1"
-                                max="3">
-                            m
-                        </div>
-                        <div><b>&theta; :</b>
-                            <input class="cons-input" id="cons-spherical-from-theta" type="number" step="5" min="0"
-                                max="90">
-                            <input class="cons-input" id="cons-spherical-to-theta" type="number" step="5" min="0"
-                                max="90">
-                            deg
-                        </div>
-                        <div><b>&phi;:</b>
-                            <input class="cons-input" id="cons-spherical-from-phi" type="number" step="5" min="0"
-                                max="90">
-                            <input class="cons-input" id="cons-spherical-to-phi" type="number" step="5" min="0"
-                                max="90">
-                            deg
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <input type="submit" onclick="addVolumeSpherical()" class="cons-input-submit" value="Plot">
-                    <input type="submit" onclick="removeVolumeSpherical()" class="cons-input-submit" value="Remove">
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-5 add-border">
-            <h5>Cylindrical Coordinates (<i>&rho;</i>, <i>&phi;</i>, <i>z</i>)</h5>
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="cText">
-                        <div><b>&rho; :</b>
-                            <input class="cons-input" id="cons-cylinder-from-rho" type="number" step="0.1" min="0.1"
-                                max="5">
-                            <input class="cons-input" id="cons-cylinder-to-rho" type="number" step="0.1" min="0.1"
-                                max="5">
-                            m
-                        </div>
-                        <div><b>&phi;:</b>
-                            <input class="cons-input" id="cons-cylinder-from-phi" type="number" step="5" min="0"
-                                max="90">
-                            <input class="cons-input" id="cons-cylinder-to-phi" type="number" step="5" min="0" max="90">
-                            deg
-                        </div>
-                        <div><b>z :</b>
-                            <input class="cons-input" id="cons-cylinder-from-z" type="number" step="0.1" min="-2"
-                                max="2">
-                            <input class="cons-input" id="cons-cylinder-to-z" type="number" step="0.1" min="-2" max="2">
-                            m
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <input type="submit" onclick="addVolumeCylinder()" class="cons-input-submit" value="Plot">
-                    <input type="submit" onclick="removeVolumeCylinder()" class="cons-input-submit" value="Remove">
-                </div>
-            </div>
-        </div>
-    </div>
+
+        <script type="text/javascript">
+
+            /*------------------------3D PLOT------------------------------*/
+
+            // Main part
+            // Create observation point
+            var vObvPoint;
+            var observationPointTrace;
+
+            // Range slider setting for spherical coordinate R
+            var P1_vimlslider_R = new VIML_Slider();
+            P1_vimlslider_R.defSliderWidth = 350;
+            P1_vimlslider_R.createUI('vimlsli_R', "<i>R </i> = ", " m", 3, [0, 1, 0.05], remainingWidth);
+            P1_vimlslider_R.disableMax();
+            P1_vimlslider_R.disableMin();
+            P1_vimlslider_R.setRange(0, 1);
+            SetUIValue_vR(1);
+            P1_vimlslider_R.setTick([[0, "0"], [0.25, "0.25"], [0.5, "0.5"], [0.75, "0.75"], [1, "1"]]);
+
+            P1_vimlslider_R.onChange = function (vValue) {
 
 
-    <script type="text/javascript">
-
-        /*------------------------3D PLOT------------------------------*/
-
-        // Main part
-        // Create observation point
-        var vObvPoint;
-        var observationPointTrace;
-
-        // Range slider setting for spherical coordinate R
-        var P1_vimlslider_R = new VIML_Slider();
-        P1_vimlslider_R.defSliderWidth = 350;
-        P1_vimlslider_R.createUI('vimlsli_R', "<i>R </i> = ", " m", 3, [0, 1, 0.05], remainingWidth);
-        P1_vimlslider_R.disableMax();
-        P1_vimlslider_R.disableMin();
-        P1_vimlslider_R.setRange(0, 1);
-        SetUIValue_vR(1);
-        P1_vimlslider_R.setTick([[0, "0"], [0.25, "0.25"], [0.5, "0.5"], [0.75, "0.75"], [1, "1"]]);
-
-        P1_vimlslider_R.onChange = function (vValue) {
+                SetUIValue_vR(vValue);
+                // show_trace();     
+                UpdatePoint();
+                show_Cartesian();
+                show_Spherical();
 
 
-            SetUIValue_vR(vValue);
-            show_trace();
-            UpdatePoint();
-            show_Cartesian();
-            show_Spherical();
+            };
+
+            // Range slider setting for spherical coordinate Theta
+            var P1_vimlslider_Theta = new VIML_Slider();
+            P1_vimlslider_Theta.defSliderWidth = 350;
+            P1_vimlslider_Theta.createUI('vimlsli_Theta', "<i>&theta;</i> = ", " rad", 4, [0, Math.PI, Math.PI / 36], remainingWidth);
+            P1_vimlslider_Theta.disableMax();
+            P1_vimlslider_Theta.disableMin();
+            P1_vimlslider_Theta.setRange(-Math.PI, Math.PI);
+            SetUIValue_vTheta(Math.PI / 3);
+            P1_vimlslider_Theta.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"]]);
+            P1_vimlslider_Theta.onChange = function (vValue) {
+
+                SetUIValue_vTheta(vValue);
+                // show_trace();
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+
+            };
 
 
-        };
-
-        // Range slider setting for spherical coordinate Theta
-        var P1_vimlslider_Theta = new VIML_Slider();
-        P1_vimlslider_Theta.defSliderWidth = 350;
-        P1_vimlslider_Theta.createUI('vimlsli_Theta', "<i>&theta;</i> = ", " rad", 4, [0, Math.PI, Math.PI / 36], remainingWidth);
-        P1_vimlslider_Theta.disableMax();
-        P1_vimlslider_Theta.disableMin();
-        P1_vimlslider_Theta.setRange(-Math.PI, Math.PI);
-        SetUIValue_vTheta(Math.PI / 3);
-        P1_vimlslider_Theta.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"]]);
-        P1_vimlslider_Theta.onChange = function (vValue) {
-
-            SetUIValue_vTheta(vValue);
-            show_trace();
-            UpdatePoint();
-            show_Cartesian();
-            show_Cylindrical();
-            show_Spherical();
-
-        };
+            // Range slider setting for spherical coordinate Phi
+            var P1_vimlslider_Phi = new VIML_Slider();
+            P1_vimlslider_Phi.defSliderWidth = 350;
+            // P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", " rad", 4, [-Math.PI, Math.PI, Math.PI/36]);       //initial
+            P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", " rad", 4, [0, (2 * Math.PI), Math.PI / 36], remainingWidth);
+            P1_vimlslider_Phi.disableMax();
+            P1_vimlslider_Phi.disableMin();
+            // P1_vimlslider_Phi.setRange(-Math.PI,  Math.PI);   //initial
+            P1_vimlslider_Phi.setRange(0, 2 * Math.PI);
+            SetUIValue_vPhi(Math.PI / 6);
+            // P1_vimlslider_Phi.setTick([[-Math.PI, "-π"], [-Math.PI / 2, "-π/2"], [0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"]]);      //initial
+            P1_vimlslider_Phi.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"], [3 * Math.PI / 2, "3π/2"], [2 * Math.PI, "2π"]]);
+            P1_vimlslider_Phi.onChange = function (vValue) {
 
 
-        // Range slider setting for spherical coordinate Phi
-        var P1_vimlslider_Phi = new VIML_Slider();
-        P1_vimlslider_Phi.defSliderWidth = 350;
-        // P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", " rad", 4, [-Math.PI, Math.PI, Math.PI/36]);       //initial
-        P1_vimlslider_Phi.createUI('vimlsli_Phi', "<i>&phi; </i>= ", " rad", 4, [0, (2 * Math.PI), Math.PI / 36], remainingWidth);
-        P1_vimlslider_Phi.disableMax();
-        P1_vimlslider_Phi.disableMin();
-        // P1_vimlslider_Phi.setRange(-Math.PI,  Math.PI);   //initial
-        P1_vimlslider_Phi.setRange(0, 2 * Math.PI);
-        SetUIValue_vPhi(Math.PI / 6);
-        // P1_vimlslider_Phi.setTick([[-Math.PI, "-π"], [-Math.PI / 2, "-π/2"], [0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"]]);      //initial
-        P1_vimlslider_Phi.setTick([[0, "0"], [Math.PI / 2, "π/2"], [Math.PI, "π"], [3 * Math.PI / 2, "3π/2"], [2 * Math.PI, "2π"]]);
-        P1_vimlslider_Phi.onChange = function (vValue) {
+                SetUIValue_vPhi(vValue);
+                // show_trace();
+                UpdatePoint();
+                show_Cartesian();
+                show_Cylindrical();
+                show_Spherical();
+
+            };
 
 
-            SetUIValue_vPhi(vValue);
-            show_trace();
-            UpdatePoint();
-            show_Cartesian();
-            show_Cylindrical();
-            show_Spherical();
-
-        };
-
-
-    </script>
-    <script type="text/javascript" src="Scripts/record.js"></script>
+        </script>
 
 </body>
 
